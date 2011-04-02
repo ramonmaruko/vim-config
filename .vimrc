@@ -10,6 +10,10 @@
 " }
 
 " Basics {
+    filetype off " Set to off in case system vimrc has already enabled it
+    call pathogen#runtime_append_all_bundles()    " Initialize Pathogen
+    call pathogen#helptags()
+
     set nocompatible " explicitly get out of vi-compatible mode
     set noexrc " don't use local version of .(g)vimrc, .exrc
     set background=dark " we plan to use a dark background
