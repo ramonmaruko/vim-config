@@ -221,7 +221,7 @@ if has("gui_running")
     " Basics {
         colorscheme vividchalk " my color scheme (only works in GUI)
         set columns=180 " perfect size for me
-        set guifont=Consolas:h10 " My favorite font
+        set guifont=Consolas\ 10 " My favorite font
         set guioptions=a 
         set lines=55 " perfect size for me
         set mousehide " hide the mouse cursor when typing
