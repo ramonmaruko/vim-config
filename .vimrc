@@ -67,6 +67,11 @@
     set autoindent
     set ffs=unix,dos,mac
     set tags+=../tags,../../tags,../../../tags,../../../../tags
+    set undodir=~/.vim/undodir
+    set undofile
+    set undolevels = 100 "maximum number of changes that can be undone
+    set undoreload = 100 "maximum number lines to save for undo on a buffer reload
+
 " }
 
 " Vim UI {
