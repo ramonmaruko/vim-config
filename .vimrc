@@ -34,6 +34,7 @@
     "             |+-- :write updates alternative file name
     "             +-- :read updates alternative file name
     syntax on " syntax highlighting on
+    autocmd! bufwritepost .vimrc source % " Auto reload of vimrc
 " }
 
 " General {
@@ -62,7 +63,10 @@
     " ignore these list file extensions
     set wildignore=*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,
                     \*.jpg,*.gif,*.png
-    set wildmode=list:longest " turn on wild mode huge list
+    set wildmode=longest:full,full
+    set autoindent
+    set ffs=unix,dos,mac
+    set tags+=../tags,../../tags,../../../tags,../../../../tags
 " }
 
 " Vim UI {
@@ -89,10 +93,13 @@
     set scrolloff=10 " Keep 10 lines (top/bottom) for scope
     set shortmess=aOstT " shortens messages to avoid 
                          " 'press a key' prompt
+    set showmatch " Show matching brackets
     set showcmd " show the command being typed
     set showmatch " show matching brackets
     set sidescrolloff=10 " Keep 5 lines at the size
-    set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
+    "set statusline=[%n]\ %<%.99f\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%{exists('*rails#statusline')?rails#statusline():''}%{exists('*fugitive#statusline')?fugitive#statusline():''}%#ErrorMsg#%{exists('*SyntasticStatuslineFlag')?SyntasticStatuslineFlag():''}%*%=%-16(\ %l,%c-%v\ %)%P
+
+    "set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
     "              | | | | |  |   |      |  |     |    |
     "              | | | | |  |   |      |  |     |    + current 
     "              | | | | |  |   |      |  |     |       column
@@ -119,12 +126,15 @@
     set nowrap " do not wrap line
     set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
     set smartcase " if there are caps, go case-sensitive
+    set smarttab
     set shiftwidth=4 " auto-indent amount when using cindent, 
                       " >>, << and stuff like that
     set softtabstop=4 " when hitting tab or backspace, how many spaces 
                        "should a tab be (see expandtab)
     set tabstop=4 " real tabs should be 8, and they will show with 
                    " set list on
+
+    set encoding=utf8
 " }
 
 " Folding {
@@ -136,17 +146,27 @@
                       " fold manually)
     set foldopen=block,hor,mark,percent,quickfix,tag " what movements
                                                       " open folds 
-    function SimpleFoldText() " {
+    function! SimpleFoldText() " {
         return getline(v:foldstart).' '
     endfunction " }
+
     set foldtext=SimpleFoldText() " Custom fold text function 
                                    " (cleaner than default)
 " }
 
 " Plugin Settings {
+    let g:CSApprox_loaded = 1
     let b:match_ignorecase = 1 " case is stupid
     let perl_extended_vars=1 " highlight advanced perl vars 
                               " inside strings
+
+    " NERDTree Settings {
+        let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+    " }
+
+    " snipMate Settings {
+        let g:snips_author = 'Ramon Marco L. Navarro<ramonmaruko@gmail.com>'
+    " }
 
     " TagList Settings {
         let Tlist_Auto_Open=0 " let the tag list open automagically
@@ -172,15 +192,46 @@
             let tlist_vb_settings = 'asp;f:function;c:class' 
         " }
     " }
+
+    " Supertab {
+        let g:SuperTabDefaultCompletionType = "context"
+        let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
+    " }
 " }
 
 " Mappings {
-    " ROT13 - fun
-    map <F12> ggVGg?
+    let mapleader = ","
+    let g:mapleader = ","
 
     " space / shift-space scroll in normal mode
     noremap <S-space> <C-b>
     noremap <space> <C-f>
+
+    noremap <Leader>bd :bd<CR>
+
+    imap <M-o> <Esc>o
+    imap <M-O> <Esc>O
+
+    " Open definition in vsplit
+    map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+    " w!! to write using sudo
+    cmap w!! %!sudo tee > /dev/null %
+
+    " Tabularize on insert mode {
+        inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+        function! s:align()
+            let p = '^\s*|\s.*\s|\s*$'
+            if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+                let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+                let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+                Tabularize/|/l1
+                normal! 0
+                call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+            endif
+        endfunction
+    " }
 
     " Make Arrow Keys Useful Again {
         map <down> <ESC>:bn<RETURN>
@@ -191,48 +242,31 @@
 " }
 
 " Autocommands {
-    " Ruby {
-        " ruby standard 2 spaces, always
-        au BufRead,BufNewFile *.rb,*.rhtml set shiftwidth=2 
-        au BufRead,BufNewFile *.rb,*.rhtml set softtabstop=2 
-    " }
-    " Notes {
-        " I consider .notes files special, and handle them differently, I
-        " should probably put this in another file
-        au BufRead,BufNewFile *.notes set foldlevel=2
-        au BufRead,BufNewFile *.notes set foldmethod=indent
-        au BufRead,BufNewFile *.notes set foldtext=foldtext()
-        au BufRead,BufNewFile *.notes set listchars=tab:\ \ 
-        au BufRead,BufNewFile *.notes set noexpandtab
-        au BufRead,BufNewFile *.notes set shiftwidth=8
-        au BufRead,BufNewFile *.notes set softtabstop=8
-        au BufRead,BufNewFile *.notes set tabstop=8
-        au BufRead,BufNewFile *.notes set syntax=notes
-        au BufRead,BufNewFile *.notes set nocursorcolumn
-        au BufRead,BufNewFile *.notes set nocursorline
-        au BufRead,BufNewFile *.notes set guifont=Consolas:h12
-        au BufRead,BufNewFile *.notes set spell
-    " }
-    au BufNewFile,BufRead *.ahk setf ahk 
+    autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+    autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
+
+    autocmd FileType ruby silent! compiler ruby | setlocal tw=79 isfname+=: makeprg=rake comments=:#\  | let &includeexpr = 'tolower(substitute(substitute('.&includeexpr.',"\\(\\u\\+\\)\\(\\u\\l\\)","\\1_\\2","g"),"\\(\\l\\|\\d\\)\\(\\u\\)","\\1_\\2","g"))' | imap <buffer> <C-Z> <CR>end<C-O>O
 " }
 
 " GUI Settings {
 if has("gui_running")
     " Basics {
-        colorscheme vividchalk " my color scheme (only works in GUI)
-        set columns=180 " perfect size for me
-        set guifont=Consolas\ 10 " My favorite font
-        set guioptions=a 
-        set lines=55 " perfect size for me
+        colorscheme vividchalk 
+        set guifont=DejaVu\ Sans\ Mono\ 8
+"        set columns=150
+        set guioptions=ac
+"        set lines=999 columns=999
         set mousehide " hide the mouse cursor when typing
-    " }
-
-    " Font Switching Binds {
-        map <F8> <ESC>:set guifont=Consolas:h8<CR>
-        map <F9> <ESC>:set guifont=Consolas:h10<CR>
-        map <F10> <ESC>:set guifont=Consolas:h12<CR>
-        map <F11> <ESC>:set guifont=Consolas:h16<CR>
-        map <F12> <ESC>:set guifont=Consolas:h20<CR>
     " }
 endif
 " }
+
+" Commands {
+    command! -bar -nargs=1 OpenURL :!chromium-browser <args>
+" }
+
+nmap <F7> :NERDTreeToggle<CR>
+
+nmap ,fb :FufBuffer<CR>
+nmap ,ff :FufFile<CR>
+nmap ,ft :FufTag<CR>
