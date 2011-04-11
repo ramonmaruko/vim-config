@@ -67,13 +67,13 @@
     set autoindent
     set ffs=unix,dos,mac
     set tags+=../tags,../../tags,../../../tags,../../../../tags
-    set undodir=~/.vim/undodir
+    set undodir=~/.vim/undo
     set undofile
 " }
 
 " Vim UI {
-    set cursorcolumn " highlight the current column
-    set cursorline " highlight current line
+    "set cursorcolumn " highlight the current column
+    "set cursorline " highlight current line
     set incsearch " BUT do highlight as you type you 
                    " search phrase
     set laststatus=2 " always show the status line
