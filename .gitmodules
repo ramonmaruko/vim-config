@@ -105,3 +105,6 @@
 	path = bundle/vim-markdown
 	url = https://github.com/plasticboy/vim-markdown.git
     ignore = untracked
+[submodule "bundle/VisIncr"]
+	path = bundle/VisIncr
+	url = https://github.com/vim-scripts/VisIncr.git
