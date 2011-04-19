@@ -157,6 +157,9 @@
 " }
 
 " Plugin Settings {
+    let g:rubycomplete_buffer_loading = 1
+    let g:rubycomplete_classes_in_global = 1
+    let g:rubycomplete_rails = 1
     let g:CSApprox_loaded = 1
     let b:match_ignorecase = 1 " case is stupid
     let perl_extended_vars=1 " highlight advanced perl vars 
@@ -244,10 +247,14 @@
 " }
 
 " Autocommands {
-    autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-    autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
-
     autocmd FileType ruby silent! compiler ruby | setlocal sw=2 sts=2 et tw=79 isfname+=: makeprg=rake comments=:#\  | let &includeexpr = 'tolower(substitute(substitute('.&includeexpr.',"\\(\\u\\+\\)\\(\\u\\l\\)","\\1_\\2","g"),"\\(\\l\\|\\d\\)\\(\\u\\)","\\1_\\2","g"))' | imap <buffer> <C-Z> <CR>end<C-O>O
+
+    if has("autocmd") && exists("+omnifunc")
+        autocmd Filetype *
+                    \	if &omnifunc == "" |
+                    \		setlocal omnifunc=syntaxcomplete#Complete |
+                    \	endif
+    endif
 " }
 
 " GUI Settings {
