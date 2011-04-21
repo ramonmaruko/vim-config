@@ -1,14 +1,3 @@
-" Modeline and Notes {
-"   vim: set foldmarker={,} foldlevel=0 spell:
-"
-"   This is my personal .vimrc, I don't recommend you copy it, just 
-"   use the "   pieces you want(and understand!).  When you copy a 
-"   .vimrc in its entirety, weird and unexpected things can happen.
-"
-"   If you find an obvious mistake hit me up at:
-"   http://robertmelton.com/contact (many forms of communication)
-" }
-
 " Basics {
     filetype off " Set to off in case system vimrc has already enabled it
     call pathogen#runtime_append_all_bundles()    " Initialize Pathogen
