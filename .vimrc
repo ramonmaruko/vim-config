@@ -202,6 +202,10 @@
         let g:SuperTabDefaultCompletionType = "context"
         let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
     " }
+    
+    " Syntastic {
+        let g:syntastic_enable_signs=1
+    " }
 " }
 
 " Mappings {
