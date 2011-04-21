@@ -244,6 +244,10 @@
         map <right> <ESC>:Tlist<RETURN>
         map <up> <ESC>:bp<RETURN>
     " }
+
+    " CTags
+    map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
+    map <C-\> :tnext<CR>"
 " }
 
 " Autocommands {
