@@ -295,3 +295,5 @@ nmap <F7> :NERDTreeToggle<CR>
 nmap ,fb :FufBuffer<CR>
 nmap ,ff :FufFile<CR>
 nmap ,ft :FufTag<CR>
+
+set completeopt=longest,menuone
