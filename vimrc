@@ -10,7 +10,6 @@ set smartcase
 
 set tags+=../tags,../../tags,../../../tags,../../../../tags,tmp/tags
 
-set lazyredraw
 set list
 set listchars=tab:>-,trail:-
 set number
