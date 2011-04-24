@@ -100,6 +100,6 @@ nmap <Leader>ff :FufFile<CR>
 nmap <Leader>tl :TlistToggle<CR>
 
 nmap <Tab> :R<CR>
-nmap <C><Tab> :A<CR>
+nmap <C-Tab> :A<CR>
 
 nmap <Leader>bd :bd<CR>
