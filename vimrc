@@ -99,5 +99,5 @@ nmap <Leader>ff :FufFile<CR>
 
 nmap <Leader>tl :TlistToggle<CR>
 
-nmap <Tab> :R
-nmap <C><Tab> :A
+nmap <Tab> :R<CR>
+nmap <C><Tab> :A<CR>
