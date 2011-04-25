@@ -102,3 +102,17 @@ nmap <Tab> :R<CR>
 nmap <C-Tab> :A<CR>
 
 nmap <Leader>bd :bd<CR>
+
+" Functions
+function! OpenURL(url)
+  if has("win32")
+    exe "!start cmd /cstart /b ".a:url.""
+  elseif $DISPLAY !~ '^\w'
+    exe "silent !chromium \"".a:url."\""
+  else
+    exe "silent !chromium -T \"".a:url."\""
+  endif
+  redraw!
+endfunction
+
+command! -nargs=1 OpenURL :call OpenURL(<q-args>)
