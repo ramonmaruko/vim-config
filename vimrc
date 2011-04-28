@@ -73,7 +73,7 @@ augroup RUBY
   autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete " use rubycomplete
   autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
   autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-  autocmd FileType cucumber,haml,sass,ruby,eruby setlocal textwidth=80
+  autocmd FileType cucumber,haml,sass,ruby,eruby setlocal textwidth=80 formatoptions+=t
   " autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
   autocmd FileType ruby       set fdm=syntax fdl=99 " fold based on syntax, default fully open
   autocmd FileType ruby       set tabstop=2 shiftwidth=2 softtabstop=2
