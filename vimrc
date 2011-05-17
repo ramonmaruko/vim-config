@@ -79,6 +79,9 @@ augroup RUBY
   autocmd FileType ruby       set tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
 
+autocmd BufReadPost fugitive://* set bufhidden=delete
+
+
 " SuperTab
 
 let g:SuperTabDefaultCompletionType = "context"
