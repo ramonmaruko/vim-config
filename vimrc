@@ -1,21 +1,21 @@
-call pathogen#infect()
+execute pathogen#infect()
 
-set nocompatible	
+set nocompatible
 
-set autochdir	
-set incsearch	
-set ignorecase	
-set smartcase	
+set autochdir
+set incsearch
+set ignorecase
+set smartcase
 
-set tags+=../tags,../../tags,../../../tags,../../../../tags,tmp/tags
+set tags+=../tags,../../tags,../../../tags,../../../../tags,tmp/tags,~/.vim/tags/*
 
 set list
-set listchars=tab:>-,trail:-
+set listchars=tab:→\ ,trail:-
 set number
 
 set background=dark
-filetype plugin indent on
 syntax on
+filetype plugin indent on
 
 set laststatus=2
 set statusline=[%n]\ %<%.99F\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%{exists('*rails#statusline')?rails#statusline():''}%{exists('*fugitive#statusline')?fugitive#statusline():''}%#ErrorMsg#%{exists('*SyntasticStatuslineFlag')?SyntasticStatuslineFlag():''}%*%=%-16(\ %l,%c-%v\ %)%P
@@ -35,8 +35,8 @@ set showmatch
 
 " 15 tabs and indenting
 
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set smarttab
 set autoindent
 set smartindent
@@ -60,8 +60,23 @@ set undodir=~/.vim/undo
 
 " XX other stuff
 
+set conceallevel=2
+
 colorscheme vividchalk
 set grepprg=ack
+
+function! PrepareRebaseCommitMessage()
+	" Remove comments
+	silent! 1,/# Please enter the commit message for your changes./-1g/^#/d
+
+	" Remove empty lines
+	silent! 1,/# Please enter the commit message for your changes./-1g/^$/d
+
+	" Turn the previous commit messages in to list items
+	silent! 1,/# Please enter the commit message for your changes./-1g!/^$/exe "normal! I* \<ESC>"
+
+	silent! normal gg[ [ gg
+endfunction
 
 " Autocommands
 
@@ -72,13 +87,23 @@ augroup RUBY
   autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete " use rubycomplete
   autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
   autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+  autocmd FileType ruby,eruby compiler ruby
   autocmd FileType cucumber,haml,sass,ruby,eruby setlocal textwidth=75 formatoptions+=t
   " autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
   autocmd FileType ruby       set fdm=syntax fdl=99 " fold based on syntax, default fully open
-  autocmd FileType ruby       set tabstop=2 shiftwidth=2 softtabstop=2
+  autocmd FileType ruby       set tabstop=2 shiftwidth=2 softtabstop=2 et
+  autocmd FileType cucumber   set tabstop=2 shiftwidth=2 softtabstop=2 et
 augroup END
 
 autocmd BufReadPost fugitive://* set bufhidden=delete
+autocmd FileType coffee     set tabstop=2 shiftwidth=2 softtabstop=2 et
+autocmd FileType python     set et
+autocmd FileType c          set tabstop=4 shiftwidth=4 softtabstop=4 et
+autocmd FileType asm        set tabstop=4 shiftwidth=4 softtabstop=4 et
+autocmd FileType yaml       set tabstop=2 shiftwidth=2 softtabstop=2 et
+autocmd FileType haskell    set et
+
+autocmd BufReadPost gitcommit call PrepareRebaseCommitMessage()
 
 
 " SuperTab
@@ -94,6 +119,7 @@ let mapleader=","
 let g:mapleader=","
 
 nmap <Leader>n :NERDTreeToggle<CR>
+nmap <Leader>m :NERDTreeToggle %<CR>
 
 nmap <Leader>fb :FufBuffer<CR>
 nmap <Leader>ff :FufFile<CR>
@@ -105,16 +131,46 @@ nmap <C-Tab> :A<CR>
 
 nmap <Leader>bd :bd<CR>
 
+nmap <Leader>tb :TagbarToggle<CR>
+
 " Functions
 function! OpenURL(url)
   if has("win32")
     exe "!start cmd /cstart /b ".a:url.""
   elseif $DISPLAY !~ '^\w'
-    exe "silent !chromium \"".a:url."\""
+    exe "silent !google-chrome \"".a:url."\""
   else
-    exe "silent !chromium -T \"".a:url."\""
+    exe "silent !google-chrome -T \"".a:url."\""
   endif
   redraw!
 endfunction
 
 command! -nargs=1 OpenURL :call OpenURL(<q-args>)
+
+let g:Powerline_symbols = "fancy"
+
+command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:\zs<CR>
+vmap <Leader>a: :Tabularize /:\zs<CR>
+
+let ruby_operators = 1
+let ruby_space_errors = 1
+let g:rubycomplete_buffer_loading = 1
+
+let g:tagbar_type_ruby = {
+    \ 'kinds' : [
+        \ 'm:modules',
+        \ 'c:classes',
+        \ 'd:describes',
+        \ 'C:contexts',
+        \ 'f:methods',
+        \ 'F:singleton methods'
+    \ ]
+\ }
+
+autocmd FileType c,cpp,java,php,ruby autocmd BufWritePre <buffer> :%s/\s\+$//e
+
+set encoding=utf-8
