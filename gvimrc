@@ -1,4 +1,4 @@
 set guioptions=a
-set guifont=Monaco\ for\ Powerline\ 8
+set guifont=Literation\ Mono\ Powerline\ 10
 set lines=999 columns=999
-colorscheme mustangpp
+colorscheme xoria256
