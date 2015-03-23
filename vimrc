@@ -1,3 +1,6 @@
+scriptencoding utf-8
+set encoding=utf-8
+
 execute pathogen#infect()
 
 set nocompatible
@@ -17,9 +20,9 @@ set background=dark
 syntax on
 filetype plugin indent on
 
-set laststatus=2
-set statusline=[%n]\ %<%.99F\ %h%w%m%r%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%y%{exists('*rails#statusline')?rails#statusline():''}%{exists('*fugitive#statusline')?fugitive#statusline():''}%#ErrorMsg#%{exists('*SyntasticStatuslineFlag')?SyntasticStatuslineFlag():''}%*%=%-16(\ %l,%c-%v\ %)%P
-
+set laststatus=2 " Always display the statusline in all windows
+set showtabline=1 " Always display the tabline, even if there is only one tab
+set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 " 12 messages and info
 
 set showcmd
@@ -147,7 +150,7 @@ endfunction
 
 command! -nargs=1 OpenURL :call OpenURL(<q-args>)
 
-let g:Powerline_symbols = "fancy"
+" let g:Powerline_symbols = "fancy"
 
 command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 
