@@ -20,6 +20,8 @@ set background=dark
 syntax on
 filetype plugin indent on
 
+set cursorcolumn
+
 set laststatus=2 " Always display the statusline in all windows
 set showtabline=1 " Always display the tabline, even if there is only one tab
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
@@ -134,7 +136,7 @@ nmap <C-Tab> :A<CR>
 
 nmap <Leader>bd :bd<CR>
 
-nmap <Leader>tb :TagbarToggle<CR>
+nmap <Leader>tb :TagbarOpenAutoClose<CR>
 
 " Functions
 function! OpenURL(url)
@@ -177,3 +179,9 @@ let g:tagbar_type_ruby = {
 autocmd FileType c,cpp,java,php,ruby autocmd BufWritePre <buffer> :%s/\s\+$//e
 
 set encoding=utf-8
+
+" syntastic recommended settings via its github page
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
