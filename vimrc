@@ -109,6 +109,7 @@ autocmd FileType c          set tabstop=4 shiftwidth=4 softtabstop=4 et
 autocmd FileType asm        set tabstop=4 shiftwidth=4 softtabstop=4 et
 autocmd FileType yaml       set tabstop=2 shiftwidth=2 softtabstop=2 et
 autocmd FileType haskell    set et
+autocmd FileType java       set tabstop=2 shiftwidth=2 softtabstop=2 et
 
 autocmd BufReadPost gitcommit call PrepareRebaseCommitMessage()
 
