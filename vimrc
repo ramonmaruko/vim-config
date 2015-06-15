@@ -17,7 +17,8 @@ set listchars=tab:→\ ,trail:-
 set number
 
 set background=dark
-syntax on
+" syntax on
+syntax enable
 filetype plugin indent on
 
 set cursorcolumn
