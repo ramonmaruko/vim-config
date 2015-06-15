@@ -68,7 +68,8 @@ set undodir=~/.vim/undo
 
 set conceallevel=2
 
-colorscheme vividchalk
+" colorscheme vividchalk
+colorscheme solarized
 set grepprg=ack
 
 function! PrepareRebaseCommitMessage()
