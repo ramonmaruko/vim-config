@@ -155,8 +155,6 @@ endfunction
 
 command! -nargs=1 OpenURL :call OpenURL(<q-args>)
 
-" let g:Powerline_symbols = "fancy"
-
 command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 
 nmap <Leader>a= :Tabularize /=<CR>
