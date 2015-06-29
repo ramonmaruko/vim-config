@@ -10,7 +10,9 @@ set incsearch
 set ignorecase
 set smartcase
 
-set tags+=../tags,../../tags,../../../tags,../../../../tags,tmp/tags,~/.vim/tags/*
+set tags=./tags;
+" read/write tags relative to current buffer location
+let g:easytags_dynamic_files = 2
 
 set list
 set listchars=tab:→\ ,trail:-
