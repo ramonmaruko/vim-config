@@ -131,7 +131,7 @@ let g:mapleader=","
 nmap <Leader>n :NERDTreeToggle<CR>
 nmap <Leader>m :NERDTreeToggle %<CR>
 
-nmap <Leader>fb :FufBuffer<CR>
+nmap <Leader>fb :CtrlPBuffer<CR>
 nmap <Leader>ff :FufFile<CR>
 
 nmap <Leader>tl :TlistToggle<CR>
@@ -193,3 +193,7 @@ let g:syntastic_check_on_wq = 0
 " slow. An explicit `:SyntasticCheck scalac` can always run the other.
 let g:syntastic_scala_checkers = ['fsc']
 let g:syntastic_ignore_files = ['\m\.sbt$']
+
+let g:ctrlp_custom_ignore = {
+	\ 'file': '\v\.(class|pyc|xz|tar|bz2|gz|jar|png|jpeg|gif|jpg|docx|doc|pdf)$',
+	\ }
