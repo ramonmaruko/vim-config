@@ -10,13 +10,18 @@ set incsearch
 set ignorecase
 set smartcase
 
-set tags=./tags;
+set tags=./.tags
 " read/write tags relative to current buffer location
 let g:easytags_dynamic_files = 2
+
+let g:powerline_loaded = 1
+let g:airline_powerline_fonts = 1
 
 set list
 set listchars=tab:→\ ,trail:-
 set number
+
+set cpoptions=d
 
 set background=dark
 " syntax on
@@ -128,6 +133,9 @@ let g:ragtag_global_maps = 1
 let mapleader=","
 let g:mapleader=","
 
+
+map Y y$
+
 nmap <Leader>n :NERDTreeToggle<CR>
 nmap <Leader>m :NERDTreeToggle %<CR>
 
@@ -196,4 +204,14 @@ let g:syntastic_ignore_files = ['\m\.sbt$']
 
 let g:ctrlp_custom_ignore = {
 	\ 'file': '\v\.(class|pyc|xz|tar|bz2|gz|jar|png|jpeg|gif|jpg|docx|doc|pdf)$',
+	\ }
+
+let g:easytags_async = 1
+
+let g:ctrlp_user_command = {
+	\ 'types': {
+		\ 1: ['.git', 'cd %s && git ls-files'],
+		\ 2: ['.hg', 'hg --cwd %s locate -I .'],
+		\ },
+	\ 'fallback': 'find %s -type f'
 	\ }
